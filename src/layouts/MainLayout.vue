@@ -90,21 +90,32 @@
             <q-item-section> About </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple to="/vehicle" active-class="my-menu-link">
-            <q-item-section avatar>
-              <q-icon name="send" />
-            </q-item-section>
-
-            <q-item-section> Vehicle </q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="drafts" />
-            </q-item-section>
-
-            <q-item-section> Drafts </q-item-section>
-          </q-item>
+          <q-expansion-item icon="drafts" label="Gestión" caption="">
+            <q-item clickable v-ripple to="/vehicle">
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+              <q-item-section> Vehiculo </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/hotel">
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+              <q-item-section> Hotel </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/activities">
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+              <q-item-section> Actividades </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/contracts">
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+              <q-item-section> Contratos </q-item-section>
+            </q-item>
+          </q-expansion-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
