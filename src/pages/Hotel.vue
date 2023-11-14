@@ -1,5 +1,4 @@
 <!-- eslint-disable vue/multi-word-component-names -->
-
 <template>
   <h1>Hotel</h1>
   <div>
@@ -114,11 +113,10 @@
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-xxl-3 mb-3" id="imp">
               <div>
-                <!-- Me quede por aqui -->
                 <q-input
                   outlined
                   label="Número de pisos"
-                  v-model="capacity_with"
+                  v-model="floors"
                   placeholder="1"
                   min="1"
                   max="40"
@@ -133,11 +131,11 @@
               <div>
                 <q-input
                   outlined
-                  label="Capacidad con equipaje"
-                  v-model="capacity_with"
-                  placeholder="2"
-                  min="2"
-                  max="40"
+                  label="Distancia al aeropuerto"
+                  v-model="dairport"
+                  placeholder="1"
+                  min="1"
+                  max="1200"
                   lazy-rules
                   :rules="[
                     (val) => (val && val.length > 0) || 'Rellene el campo',
@@ -149,11 +147,44 @@
               <div>
                 <q-input
                   outlined
-                  label="Capacidad con equipaje"
-                  v-model="capacity_with"
-                  placeholder="2"
-                  min="2"
-                  max="40"
+                  label="Distancia a la ciudad"
+                  v-model="dcity"
+                  placeholder="0"
+                  min="0"
+                  max="1200"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Rellene el campo',
+                  ]"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-xxl-3 mb-3" id="imp">
+              <div class="form-floating">
+                <q-input
+                  v-model="location"
+                  outlined
+                  placeholder="Calle A entre 8 y 10 15811 localidad provincia"
+                  label="Dirección"
+                  lazy-rules
+                  :rules="[
+                    // (val) =>
+                    //   /^Calle\s[A-Za-z]\d+\sentre\s[A-Za-z]\d+\sy\s[A-Za-z]\d+\s\d+\s[A-Za-z]+\s[A-Za-z]+$/.test(
+                    //     val
+                    //   ) || 'La dirección no sigue el patrón requerido',
+                    (val) => (val && val.length > 0) || 'Rellene el campo',
+                  ]"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-xxl-3 mb-3" id="imp">
+              <div>
+                <q-input
+                  outlined
+                  label="Fecha"
+                  v-model="date"
+                  type="date"
+                  hint="Native date"
                   lazy-rules
                   :rules="[
                     (val) => (val && val.length > 0) || 'Rellene el campo',
@@ -164,30 +195,15 @@
             <div class="col-12 col-sm-4 col-md-4 col-xxl-3 mb-3" id="imp">
               <div>
                 <q-select
-                  v-model="selectedYear"
+                  v-model="commercialization"
                   outlined
-                  :options="optionsyear"
-                  label="Select a year"
-                />
-              </div>
-            </div>
-            <div class="col-12 col-sm-4 col-md-4 col-xxl-3 mb-3" id="imp">
-              <div class="form-floating">
-                <q-input
-                  v-model="manufacturing"
-                  outlined
-                  type="textarea"
-                  label="Modo de fabricación"
-                  rows="3"
-                  maxlength="200"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Rellene el campo',
-                  ]"
+                  :options="optionscom"
+                  label="Modo de comercialización"
                 />
               </div>
             </div>
           </div>
+
           <div>
             <q-btn
               color="primary"
@@ -206,43 +222,42 @@
       </div>
     </q-dialog>
   </div>
+  <pintar-hoteles :hoteles="hoteles" />
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-import PintarVehicles from "src/components/PintarVehicles.vue";
+import { ref } from "vue";
+import PintarHoteles from "src/components/PintarHoteles.vue";
 
 export default {
-  // components: { PintarVehicles },
+  components: { PintarHoteles },
   setup() {
     // Variables reactivas
-    const optionsyear = ref([]);
+    const optionscom = ref([]);
     const name = ref("");
     const province = ref(null);
     const category = ref("");
     const phone = ref("");
     const email = ref("");
     const rooms = ref("");
-    const manufacturing = ref("");
+    const floors = ref("");
+    const dairport = ref("");
+    const dcity = ref("");
+    const location = ref("");
+    const date = ref("");
     const model = ref(null);
-    const selectedYear = ref(null);
+    const commercialization = ref(null);
     const myForm = ref(null);
 
     //Arreglo de vehiculos
-    const vehicles = ref([]);
+    const hoteles = ref([]);
 
-    const generateYears = () => {
-      const currentYear = new Date().getFullYear();
-      for (let year = 1900; year <= currentYear; year++) {
-        optionsyear.value.push(year);
-      }
-    };
     const procesingForm = () => {
       console.log("me diste click");
       myForm.value.resetValidation();
       //luego se procesa el formulario
-      vehicles.value = [
-        ...vehicles.value,
+      hoteles.value = [
+        ...hoteles.value,
         {
           name: name.value,
           model: model.value,
@@ -250,8 +265,12 @@ export default {
           phone: phone.value,
           email: email.value,
           rooms: rooms.value,
-          year: selectedYear.value,
-          manufacturing: manufacturing.value,
+          floors: floors.value,
+          dairport: dairport.value,
+          dcity: dcity.value,
+          commercialization: commercialization.value,
+          location: location.value,
+          date: date.value,
         },
       ];
       //restablece los valores del formulario
@@ -263,12 +282,14 @@ export default {
       phone.value = null;
       email.value = null;
       rooms.value = null;
-      manufacturing.value = null;
+      floors.value = null;
+      dairport.value = null;
+      dcity.value = null;
+      location.value = null;
+      date.value = null;
       model.value = null;
-      selectedYear.value = null;
+      commercialization.value = null;
     };
-
-    onMounted(generateYears);
 
     return {
       name,
@@ -277,10 +298,14 @@ export default {
       phone,
       email,
       rooms,
-      manufacturing,
+      floors,
+      dairport,
+      dcity,
+      location,
+      date,
       province,
-      selectedYear,
-      optionsyear,
+      commercialization,
+      optionscom: ["Alto", "Medio", "Bajo"],
       myForm,
       inception: ref(false),
       options: ["Melia", "Iberostar", "GranCaribe", "Royalton", "Barcelo"],
@@ -302,7 +327,7 @@ export default {
         "Guantánamo",
         " Isla de la Juventud",
       ],
-      vehicles,
+      hoteles,
       procesingForm,
       reset,
     };

@@ -18,7 +18,7 @@ const columns = [
   },
   {
     name: "model",
-    label: "Modelo",
+    label: "Cadena",
     alingn: "left",
     field: "model",
     sortable: true,
