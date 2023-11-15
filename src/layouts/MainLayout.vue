@@ -115,6 +115,12 @@
               </q-item-section>
               <q-item-section> Contratos </q-item-section>
             </q-item>
+            <q-item clickable v-ripple to="/modality">
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+              <q-item-section> Modalidad</q-item-section>
+            </q-item>
           </q-expansion-item>
         </q-list>
       </q-scroll-area>

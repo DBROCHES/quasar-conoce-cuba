@@ -27,6 +27,10 @@ const routes = [
         path: "/contracts",
         component: () => import("pages/Contracts.vue"),
       },
+      {
+        path: "/modality",
+        component: () => import("pages/Modality.vue"),
+      },
     ],
   },
 
